@@ -133,6 +133,128 @@ export default function Home() {
             </div>
           </div>
 
+          {/* CTA + Form */}
+          <div className="bg-bark rounded-xl p-6 sm:p-8 border border-bark-light max-w-md mx-auto mb-4">
+            <h3 className="font-display text-2xl tracking-wide text-center text-foreground mb-1">
+              Get Early Access
+            </h3>
+            <p className="text-slate text-sm text-center mb-6">
+              Sign up and we&apos;ll email you when the app is ready.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label
+                  htmlFor="name"
+                  className="block text-sm font-medium text-slate mb-1"
+                >
+                  Name
+                </label>
+                <input
+                  id="name"
+                  type="text"
+                  required
+                  value={form.name}
+                  onChange={(e) => setForm({ ...form, name: e.target.value })}
+                  placeholder="Your name"
+                  className="w-full px-4 py-3 bg-background border border-bark-light rounded-lg text-foreground placeholder:text-slate/50 focus:outline-none focus:border-copper transition"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-slate mb-1"
+                >
+                  Email
+                </label>
+                <input
+                  id="email"
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={(e) => setForm({ ...form, email: e.target.value })}
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 bg-background border border-bark-light rounded-lg text-foreground placeholder:text-slate/50 focus:outline-none focus:border-copper transition"
+                />
+              </div>
+
+              <div>
+                <label
+                  htmlFor="phone"
+                  className="block text-sm font-medium text-slate mb-1"
+                >
+                  Phone <span className="text-slate/50">(optional)</span>
+                </label>
+                <input
+                  id="phone"
+                  type="tel"
+                  value={form.phone}
+                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
+                  placeholder="(555) 123-4567"
+                  className="w-full px-4 py-3 bg-background border border-bark-light rounded-lg text-foreground placeholder:text-slate/50 focus:outline-none focus:border-copper transition"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-slate mb-2">
+                  I&apos;m interested in
+                </label>
+                <div className="flex gap-3">
+                  {(
+                    [
+                      ["both", "Both"],
+                      ["hunting", "Afield"],
+                      ["fishing", "Afloat"],
+                    ] as const
+                  ).map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      onClick={() => setForm({ ...form, interest: value })}
+                      className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border transition ${
+                        form.interest === value
+                          ? "bg-olive border-olive-light text-foreground"
+                          : "bg-background border-bark-light text-slate hover:border-slate/50"
+                      }`}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {errorMsg && (
+                <p className="text-red-400 text-sm text-center">{errorMsg}</p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "loading"}
+                className="w-full py-3 px-6 bg-copper hover:bg-copper-light text-background font-semibold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === "loading" ? "Signing up..." : "Join the Waitlist"}
+              </button>
+            </form>
+          </div>
+
+          <p className="text-center text-slate/50 text-xs mb-10">
+            We&apos;ll only email you when the app launches. No spam, ever.
+          </p>
+
+          {/* Scroll down note */}
+          <div className="text-center mb-10">
+            <p className="text-slate text-sm mb-2">
+              Want to see everything these apps can do?
+            </p>
+            <p className="text-copper font-display text-lg tracking-wide">
+              Scroll down for the full 155+ feature list
+            </p>
+            <div className="text-slate/40 text-2xl mt-2 animate-bounce">&#8595;</div>
+          </div>
+
+          <hr className="border-bark-light mb-10" />
+
           {/* ── HUNTING FEATURES ── */}
           <div className="mb-6">
             <h2 className="font-display text-3xl tracking-wide text-olive-light text-center mb-6">
@@ -384,114 +506,6 @@ export default function Home() {
             </div>
           </div>
 
-          {/* CTA + Form */}
-          <div className="bg-bark rounded-xl p-6 sm:p-8 border border-bark-light max-w-md mx-auto">
-            <h3 className="font-display text-2xl tracking-wide text-center text-foreground mb-1">
-              Get Early Access
-            </h3>
-            <p className="text-slate text-sm text-center mb-6">
-              Sign up and we&apos;ll email you when the app is ready.
-            </p>
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-slate mb-1"
-                >
-                  Name
-                </label>
-                <input
-                  id="name"
-                  type="text"
-                  required
-                  value={form.name}
-                  onChange={(e) => setForm({ ...form, name: e.target.value })}
-                  placeholder="Your name"
-                  className="w-full px-4 py-3 bg-background border border-bark-light rounded-lg text-foreground placeholder:text-slate/50 focus:outline-none focus:border-copper transition"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-slate mb-1"
-                >
-                  Email
-                </label>
-                <input
-                  id="email"
-                  type="email"
-                  required
-                  value={form.email}
-                  onChange={(e) => setForm({ ...form, email: e.target.value })}
-                  placeholder="you@example.com"
-                  className="w-full px-4 py-3 bg-background border border-bark-light rounded-lg text-foreground placeholder:text-slate/50 focus:outline-none focus:border-copper transition"
-                />
-              </div>
-
-              <div>
-                <label
-                  htmlFor="phone"
-                  className="block text-sm font-medium text-slate mb-1"
-                >
-                  Phone <span className="text-slate/50">(optional)</span>
-                </label>
-                <input
-                  id="phone"
-                  type="tel"
-                  value={form.phone}
-                  onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                  placeholder="(555) 123-4567"
-                  className="w-full px-4 py-3 bg-background border border-bark-light rounded-lg text-foreground placeholder:text-slate/50 focus:outline-none focus:border-copper transition"
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-slate mb-2">
-                  I&apos;m interested in
-                </label>
-                <div className="flex gap-3">
-                  {(
-                    [
-                      ["both", "Both"],
-                      ["hunting", "Afield"],
-                      ["fishing", "Afloat"],
-                    ] as const
-                  ).map(([value, label]) => (
-                    <button
-                      key={value}
-                      type="button"
-                      onClick={() => setForm({ ...form, interest: value })}
-                      className={`flex-1 py-2 px-3 rounded-lg text-sm font-medium border transition ${
-                        form.interest === value
-                          ? "bg-olive border-olive-light text-foreground"
-                          : "bg-background border-bark-light text-slate hover:border-slate/50"
-                      }`}
-                    >
-                      {label}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {errorMsg && (
-                <p className="text-red-400 text-sm text-center">{errorMsg}</p>
-              )}
-
-              <button
-                type="submit"
-                disabled={status === "loading"}
-                className="w-full py-3 px-6 bg-copper hover:bg-copper-light text-background font-semibold rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
-              >
-                {status === "loading" ? "Signing up..." : "Join the Waitlist"}
-              </button>
-            </form>
-          </div>
-
-          <p className="text-center text-slate/50 text-xs mt-6">
-            We&apos;ll only email you when the app launches. No spam, ever.
-          </p>
         </div>
       </section>
     </main>
