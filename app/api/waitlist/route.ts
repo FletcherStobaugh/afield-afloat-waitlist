@@ -56,8 +56,13 @@ export async function POST(request: NextRequest) {
   }
 }
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    const key = request.nextUrl.searchParams.get("key");
+    if (key !== process.env.ADMIN_KEY) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
     const sql = getDb();
     await sql`
       CREATE TABLE IF NOT EXISTS waitlist (
@@ -69,9 +74,10 @@ export async function GET() {
         created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
       )
     `;
-    const rows = await sql`SELECT count(*) as count FROM waitlist`;
-    return NextResponse.json({ count: Number(rows[0].count) });
+    const rows = await sql`SELECT * FROM waitlist ORDER BY created_at DESC`;
+    const count = await sql`SELECT count(*) as count FROM waitlist`;
+    return NextResponse.json({ count: Number(count[0].count), signups: rows });
   } catch {
-    return NextResponse.json({ count: 0 });
+    return NextResponse.json({ error: "Database error" }, { status: 500 });
   }
 }
